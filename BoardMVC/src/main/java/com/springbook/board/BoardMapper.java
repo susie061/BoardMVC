@@ -1,0 +1,14 @@
+package com.springbook.board;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface BoardMapper {
+	public int insBoard(BoardVO param);
+	public List<BoardVO> selBoardList(BoardVO param);
+	public BoardVO selBoard(BoardVO param);
+	public int delBoard(int i_board);
+	public int updBoard(BoardVO param);
+}
