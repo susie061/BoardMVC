@@ -46,8 +46,22 @@ public class UserController {
 	}	
 	
 	@RequestMapping(value="/loginPost", method=RequestMethod.POST)
-	public String login(UserVO param, HttpSession hs) {
-		
+	public String login(UserVO param, HttpSession hs,Model model) {
+		int result =service.login(param, hs);
+		System.out.println("result:" + result);
+		String msg = "알 수 없는 에러가 발생 했습니다";
+		switch (result) {
+		case 1:
+			return "redirect:/board/list";
+		case 2:
+			msg = "아이디를 확인해 주세요";
+			break;
+		case 3:
+			msg = "비밀번호를 확인 해 주세요";
+			break;
+			
+		}
+		model.addAttribute("msg", msg);
 		return "user/login";
 	}
 	

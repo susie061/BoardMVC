@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springbook.board.user.UserVO;
 import com.springbook.board.common.Const;
 import com.springbook.board.common.KakaoAuth;
 import com.springbook.board.common.KakaoUserInfo;
@@ -46,10 +47,26 @@ public class UserService {
 	}
 	
 	public int login(UserVO param, HttpSession hs) {
-		int result = 0;
-		
-		return result;
-	}
+        int result = 0;
+        UserVO data = mapper.login(param);
+        
+        if(data == null) {
+           result = 2;
+        } else {
+           String clientUpw = MyUtils.hashPassword(param.getUpw(), data.getSalt());
+           if(data.getUpw().equals(clientUpw)) {
+              result = 1;
+              UserVO loginUser = new UserVO();
+              loginUser.setI_user(data.getI_user());
+              loginUser.setNm(data.getNm());
+              
+              hs.setAttribute("loginUser", loginUser);
+           } else {
+              result = 3;
+           }
+        }
+        return result;
+     }
 
 	public int kakaoLogin(String code, HttpSession hs) {
 		int result = 0;
