@@ -8,9 +8,21 @@
 		(#{uid}, #{upw},  #{salt}, #{nm}, #{addr},#{ph})
 	</insert>
 
-	<select id ="login" resultType="com.springbook.board.user.UserVO" parameterType="com.springbook.board.user.UserVO">
-		select i_user ,uid, salt, upw, nm from t_user where uid=#{uid}
+	<select id ="selUser" resultType="com.springbook.board.user.UserVO" parameterType="com.springbook.board.user.UserVO">
+		select i_user ,uid, salt, upw, nm , profileImg from t_user where
+		<if test ='uid != null and uid !=""'> uid=#{uid}</if>
+		<if test='i_user > 0'>i_user =#{i_user}</if>
 	</select>
 	
+	<update id="updUser" parameterType="com.springbook.board.user.UserVO">
+		update t_user
+		set m_dt = now()
+		<if test ='upw != null and upw !="" '>, upw = #{upw}</if>
+		<if test ='nm != null and nm !="" '> , nm = #{nm}</if>
+		<if test ='addr != null and addr !="" '>, addr = #{addr}</if>
+		<if test ='ph != null and ph !="" '>, ph = #{ph}</if>
+		<if test ='profileImg != null '>, profileImg = #{profileImg}</if>
+		where i_user =#{i_user}
+	</update>
 
 </mapper>
